@@ -1,0 +1,28 @@
+{
+  "name": "languge-utils",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/khoaace/lan-utils.git"
+  },
+  "keywords": [
+    "lan",
+    "utils"
+  ],
+  "author": "KhoaDev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/khoaace/lan-utils/issues"
+  },
+  "homepage": "https://github.com/khoaace/lan-utils#readme",
+  "dependencies": {
+    "@google-cloud/translate": "^6.0.5",
+    "dotenv": "^8.2.0"
+  }
+}
