@@ -1,1 +1,1 @@
-Hóa đơn và hóa đơn
+the_current_date_is_less_than_the_data_lock_date

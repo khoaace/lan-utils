@@ -48,7 +48,34 @@ async function pushNewLanguage(content = {}, lan = 'en') {
   fs.unlinkSync(PATH_FILE_TEMP);
 
   return `language.${name}`;
-  // console.log('file', fileEnJSON);
+}
+
+async function removeLanguage(name = '', lan = 'en') {
+  let PATH_FILE = `${PATH}${lan}.json`;
+  let PATH_FILE_TEMP = `${PATH}${lan}Temp.json`;
+
+  let fileLan = await fs.readFileSync(PATH_FILE);
+  let fileLanArray =  fileLan.toString().split('\n');
+  let fileLanJSON = JSON.parse(fileLan);
+  let value = '';
+
+  if (fileLanJSON[name]) {
+    for (let pos = 0; pos < fileLanArray.length; pos++) {
+      const line = fileLanArray[pos];
+      if (line.toString().indexOf(name) === -1) {
+        if (pos === 0) {
+          fs.appendFileSync(PATH_FILE_TEMP, line.toString());
+        } else {
+          fs.appendFileSync(PATH_FILE_TEMP, "\n" + line.toString());
+        }
+      }
+    }
+  
+    fs.copyFileSync(PATH_FILE_TEMP, PATH_FILE);
+    fs.unlinkSync(PATH_FILE_TEMP);
+  
+    return `Remove success: language.${name}`;
+  }
 }
 
 async function readFileAndConvert(pathName = '') {
@@ -61,7 +88,7 @@ async function readFileAndConvert(pathName = '') {
   }
 }
 
-async function run(params) {
+async function run() {
   try {
     const translate = new Translate({
       credentials: credentials,
@@ -112,6 +139,32 @@ async function run(params) {
       let successMessage = await pushNewLanguage(word, 'en');
       await pushNewLanguage(word, 'vn');
       await pushNewLanguage(word, 'jp');
+      console.log(successMessage);
+    }
+  } catch (error) {
+    console.log("Error", error);
+  }
+}
+
+async function runExample(params) {
+  try {
+    let changeWord = { target: '', convert: '' };
+    let dataArray = await readFileAndConvert(`./${FILE_NAME}`);
+    let result = [];
+
+    if (dataArray[0].indexOf('*') !== -1) {
+      let changeWordContent = dataArray[0];
+      let changeWordArray = changeWordContent.replace('*', '').split('-');
+      changeWord.target = changeWordArray[0].toLowerCase();
+      changeWord.convert = changeWordArray[1].toLowerCase();
+      dataArray.shift();
+    }
+
+    for (let pos = 0; pos < dataArray.length; pos++) {
+      const word = dataArray[pos];
+      let successMessage = await removeLanguage(word, 'en');
+      await removeLanguage(word, 'vn');
+      await removeLanguage(word, 'jp');
       console.log(successMessage);
     }
   } catch (error) {
