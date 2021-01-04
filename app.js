@@ -1,10 +1,10 @@
 const fs = require('fs');
 const { Translate } = require('@google-cloud/translate').v2;
 const credentials = require('./creds.json');
-require('dotenv').config();
+require('dotenv').config()
 
-const PATH = process.env.PATH_NAME;
-const FILE_NAME = process.env.FILE_NAME;
+const PATH = process.env.PATH_NAME || '';
+const FILE_NAME = process.env.FILE_NAME || '';
 
 run();
 
